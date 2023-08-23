@@ -52,10 +52,10 @@ def insert_oltp_transactions():
         cur.execute("DROP TABLE IF EXISTS transactions")
         cur.execute("CREATE TABLE transactions(transaction_id serial primary key, customer_id int, product_id int, amount money, qty int, channel_id int, bought_date date )")
 
-        query = "INSERT INTO transactions({}) VALUES %s".format(','.join(columns))
+        query = f"INSERT INTO transactions({','.join(columns)}) VALUES %s"
 
         # convert projects values to sequence of sequences
-        values = [[value for value in tran.values()] for tran in trans]
+        values = [list(tran.values()) for tran in trans]
 
         execute_values(cur, query, values)
 
@@ -75,10 +75,10 @@ def insert_oltp_resellers():
         cur.execute("DROP TABLE IF EXISTS resellers")
         cur.execute("CREATE TABLE resellers(reseller_id int, reseller_name VARCHAR(255), commission_pct decimal)")
 
-        query = "INSERT INTO resellers({}) VALUES %s".format(','.join(columns))
+        query = f"INSERT INTO resellers({','.join(columns)}) VALUES %s"
 
         # convert projects values to sequence of seqeences
-        values = [[value for value in tran.values()] for tran in RESELLERS_TRANSACTIONS]
+        values = [list(tran.values()) for tran in RESELLERS_TRANSACTIONS]
 
         execute_values(cur, query, values)
 
@@ -97,10 +97,10 @@ def insert_oltp_channels():
         cur.execute("DROP TABLE IF EXISTS channels")
         cur.execute("CREATE TABLE channels(channel_id int, channel_name VARCHAR(255))")
 
-        query = "INSERT INTO channels({}) VALUES %s".format(','.join(columns))
+        query = f"INSERT INTO channels({','.join(columns)}) VALUES %s"
 
         # convert projects values to sequence of seqeences
-        values = [[value for value in tran.values()] for tran in CHANNELS]
+        values = [list(tran.values()) for tran in CHANNELS]
 
         execute_values(cur, query, values)
 
@@ -125,9 +125,9 @@ def insert_oltp_customers():
         cur.execute("DROP TABLE IF EXISTS customers")
         cur.execute("CREATE TABLE customers(customer_id int, first_name VARCHAR(255), last_name VARCHAR(255), email VARCHAR(255))")
 
-        query = "INSERT INTO customers({}) VALUES %s".format(','.join(columns))
+        query = f"INSERT INTO customers({','.join(columns)}) VALUES %s"
 
-        values = [[value for value in tran.values()] for tran in trans]
+        values = [list(tran.values()) for tran in trans]
 
         execute_values(cur, query, values)
 
@@ -138,7 +138,7 @@ def insert_oltp_products():
     print('Inserting products')
 
     trans = PRODUCTS
-    
+
     columns = trans[0].keys()
 
     with CONNECTION as conn:
@@ -148,9 +148,9 @@ def insert_oltp_products():
         cur.execute("DROP TABLE IF EXISTS products")
         cur.execute("CREATE TABLE products(product_id int, name VARCHAR(255), city VARCHAR(255), price money)")
 
-        query = "INSERT INTO products({}) VALUES %s".format(','.join(columns))
+        query = f"INSERT INTO products({','.join(columns)}) VALUES %s"
 
-        values = [[value for value in tran.values()] for tran in trans]
+        values = [list(tran.values()) for tran in trans]
 
         execute_values(cur, query, values)
 
@@ -161,8 +161,7 @@ def generate_csv(resellerid, n=50000):
     print('Generating CSV data')
     export = []
 
-    for i in range(n): 
-
+    for _ in range(n):
         product = choice(PRODUCTS)
 
         qty = randrange(1,7)
@@ -183,8 +182,8 @@ def generate_csv(resellerid, n=50000):
                     'Series City': product['city'],
                     'Created Date': boughtdate,
                     'Reseller ID' : resellerid
-                     
-                     
+
+
                       }
 
         export.append(transaction)
@@ -225,8 +224,7 @@ def generate_json(resellerid, n = 50000 ):
     print('Generating JSON data')
     export = []
 
-    for i in range(n):
-
+    for _ in range(n):
         product = choice(PRODUCTS)
 
         qty = randrange(1,7)
