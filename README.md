@@ -17,15 +17,20 @@ This application is an Analytics suite suite for an imaginary company selling po
 
 ## Setup
 
-Rename `.env.example` file to `.env` and set your desired password. Remember to never commit files containing passwords or any other sensitive information.
+1. Rename `.env.example` file to `.env` and set your desired password. Remember to never commit files containing passwords or any other sensitive information.
 
-Rename `shared/db/datamart.duckdb.example` to `shared/db/datamart.duckdb` or init an empty database file.
+2. Rename `shared/db/datamart.duckdb.example` to `shared/db/datamart.duckdb` or init an empty database file there with that name.
 
-With **Docker engine** and **Docker-Compose** installed, change directory to the root folder of the project (also the one that contains docker-compose.yml) and run
+3. With **Docker engine** and **Docker-Compose** installed, change directory to the root folder of the project (also the one that contains docker-compose.yml) and run
 
-`
-docker-compose up --build
-`
+    `docker-compose up --build`
+
+4. Once the Docker suite has finished loading, open up [Dagster (dagit)](http://localhost:3000) , go to `Assets`, select all and click `Materialize selected`
+
+![Dagit](resources/dagit.png "Dagit")
+
+5. When the assets have been materialized, you can open the [Superset interface](http://localhost:8088)
+
 
 ### Demo Credentials
 
